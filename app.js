@@ -12,6 +12,7 @@ const btnSetA     = document.getElementById('btn-set-a');
 const btnSetB     = document.getElementById('btn-set-b');
 const btnClearAB  = document.getElementById('btn-clear-ab');
 const abDisplay   = document.getElementById('ab-display');
+const btnFullscreen = document.getElementById('btn-fullscreen');
 const speedBtns   = document.querySelectorAll('.speed-btn');
 
 // ── State ───────────────────────────────────────────────
@@ -130,6 +131,37 @@ function toggleMirror() {
 
 btnMirror.addEventListener('click', toggleMirror);
 
+// ── Fullscreen ─────────────────────────────────────────
+function toggleFullscreen() {
+  const wrapper = document.querySelector('.video-wrapper');
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+    // Lock to landscape if supported
+    const req = wrapper.requestFullscreen
+      ? wrapper.requestFullscreen()
+      : wrapper.webkitRequestFullscreen
+        ? wrapper.webkitRequestFullscreen()
+        : Promise.resolve();
+    req.catch(() => {});
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+}
+
+btnFullscreen.addEventListener('click', toggleFullscreen);
+
+document.addEventListener('fullscreenchange', updateFullscreenBtn);
+document.addEventListener('webkitfullscreenchange', updateFullscreenBtn);
+
+function updateFullscreenBtn() {
+  const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  btnFullscreen.classList.toggle('active', isFs);
+  btnFullscreen.textContent = isFs ? '⛶ Exit' : '⛶ Fullscreen';
+}
+
 // ── A-B Loop ────────────────────────────────────────────
 function updateABDisplay() {
   const a = loopA !== null ? fmt(loopA) : '--';
@@ -184,6 +216,10 @@ document.addEventListener('keydown', (e) => {
     case 'm':
     case 'M':
       toggleMirror();
+      break;
+    case 'f':
+    case 'F':
+      toggleFullscreen();
       break;
   }
 });
