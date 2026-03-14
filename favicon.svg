@@ -9,36 +9,66 @@
       <stop offset="0%" stop-color="rgba(255,255,255,0.15)"/>
       <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
     </linearGradient>
+    <linearGradient id="ribbon1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.6)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.1)"/>
+    </linearGradient>
+    <linearGradient id="ribbon2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.4)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.05)"/>
+    </linearGradient>
   </defs>
 
   <!-- Rounded square background -->
   <rect x="16" y="16" width="480" height="480" rx="96" ry="96" fill="url(#bg)"/>
   <rect x="16" y="16" width="480" height="480" rx="96" ry="96" fill="url(#shine)"/>
 
-  <!-- Dancing figure silhouette (simplified, on the left side) -->
+  <!-- Flowing ribbon trail behind dancer -->
+  <path d="M100,320 C130,280 160,350 200,300 C240,250 220,200 260,180 C300,160 310,210 340,190"
+        fill="none" stroke="url(#ribbon2)" stroke-width="8" stroke-linecap="round"/>
+  <path d="M90,360 C140,330 150,380 200,340 C250,300 230,240 270,210 C310,180 330,230 360,200"
+        fill="none" stroke="url(#ribbon2)" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Dancing figure — fluid curved silhouette -->
   <!-- Head -->
-  <circle cx="195" cy="140" r="28" fill="rgba(255,255,255,0.9)"/>
-  <!-- Body -->
-  <line x1="195" y1="168" x2="195" y2="260" stroke="rgba(255,255,255,0.9)" stroke-width="14" stroke-linecap="round"/>
-  <!-- Left arm raised up -->
-  <line x1="195" y1="200" x2="155" y2="155" stroke="rgba(255,255,255,0.9)" stroke-width="12" stroke-linecap="round"/>
-  <!-- Right arm out -->
-  <line x1="195" y1="200" x2="240" y2="180" stroke="rgba(255,255,255,0.9)" stroke-width="12" stroke-linecap="round"/>
-  <!-- Left leg -->
-  <line x1="195" y1="260" x2="155" y2="340" stroke="rgba(255,255,255,0.9)" stroke-width="13" stroke-linecap="round"/>
-  <!-- Right leg kicked out -->
-  <line x1="195" y1="260" x2="245" y2="330" stroke="rgba(255,255,255,0.9)" stroke-width="13" stroke-linecap="round"/>
+  <circle cx="210" cy="130" r="26" fill="rgba(255,255,255,0.92)"/>
 
-  <!-- Play button triangle -->
-  <polygon points="280,180 280,360 400,270" fill="rgba(255,255,255,0.95)"/>
+  <!-- Neck + flowing torso (S-curve) -->
+  <path d="M210,156 C212,175 218,210 208,250 C202,275 200,285 195,300"
+        fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="13" stroke-linecap="round"/>
 
-  <!-- Motion/energy lines -->
-  <line x1="130" y1="130" x2="110" y2="110" stroke="rgba(255,255,255,0.5)" stroke-width="6" stroke-linecap="round"/>
-  <line x1="140" y1="115" x2="130" y2="90" stroke="rgba(255,255,255,0.4)" stroke-width="5" stroke-linecap="round"/>
-  <line x1="160" y1="110" x2="158" y2="85" stroke="rgba(255,255,255,0.3)" stroke-width="4" stroke-linecap="round"/>
+  <!-- Left arm — arching gracefully upward -->
+  <path d="M215,190 C195,175 165,140 140,120 C130,112 118,115 112,125"
+        fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="11" stroke-linecap="round"/>
 
-  <!-- Subtle rhythm dots -->
-  <circle cx="120" cy="370" r="6" fill="rgba(255,255,255,0.25)"/>
-  <circle cx="145" cy="385" r="4" fill="rgba(255,255,255,0.2)"/>
-  <circle cx="170" cy="375" r="5" fill="rgba(255,255,255,0.22)"/>
+  <!-- Right arm — sweeping outward in a curve -->
+  <path d="M215,195 C235,185 260,175 280,165 C295,158 300,150 295,140"
+        fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="11" stroke-linecap="round"/>
+
+  <!-- Left leg — curved and grounded -->
+  <path d="M198,295 C185,320 170,345 155,370 C148,380 140,385 132,380"
+        fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- Right leg — kicked out with flow -->
+  <path d="M198,290 C215,310 240,330 265,345 C280,353 290,350 292,340"
+        fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- Play button — softer with rounded edges -->
+  <path d="M330,200 C330,195 332,192 337,192 L410,250 C416,254 416,262 410,266 L337,324 C332,324 330,321 330,316 Z"
+        fill="rgba(255,255,255,0.92)"/>
+
+  <!-- Flowing energy swirls -->
+  <path d="M120,100 C105,95 95,105 100,115"
+        fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M140,90 C128,82 115,90 120,102"
+        fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M155,85 C148,75 135,80 138,92"
+        fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Flowing dots / sparkles along movement path -->
+  <circle cx="105" cy="350" r="5" fill="rgba(255,255,255,0.25)"/>
+  <circle cx="130" cy="370" r="3.5" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="155" cy="360" r="4" fill="rgba(255,255,255,0.18)"/>
+  <circle cx="280" cy="355" r="4" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="300" cy="345" r="3" fill="rgba(255,255,255,0.15)"/>
 </svg>
