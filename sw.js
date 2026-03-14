@@ -1,10 +1,12 @@
-const CACHE_NAME = 'dance-player-v2';
+const CACHE_NAME = 'dance-player-v3';
 const ASSETS = [
   '/',
   '/index.html',
   '/styles.css',
   '/app.js',
-  '/manifest.json'
+  '/manifest.json',
+  '/icon.svg',
+  '/favicon.svg'
 ];
 
 // Install: cache core assets
