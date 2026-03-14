@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Dance video player for practicing dance moves with speed control, A-B loop, and mirror mode.">
+  <title>Dance Player</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>Dance Player</h1>
+    </header>
+
+    <div id="video-pick" class="pick-section">
+      <label class="pick-btn" for="file-input">
+        <span class="pick-icon">🎬</span>
+        <span>Select Video</span>
+      </label>
+      <input type="file" id="file-input" accept="video/*" hidden>
+    </div>
+
+    <div id="player-section" class="player-section hidden">
+      <div class="video-wrapper">
+        <video id="video" playsinline></video>
+      </div>
+
+      <div class="controls">
+        <!-- Play / Pause + Time -->
+        <div class="controls-row main-row">
+          <button id="btn-play" class="ctrl-btn" aria-label="Play/Pause">▶️</button>
+          <span id="time-display" class="time-display">0:00 / 0:00</span>
+        </div>
+
+        <!-- Seek bar -->
+        <div class="controls-row">
+          <input type="range" id="seek-bar" class="seek-bar" min="0" max="1000" value="0">
+        </div>
+
+        <!-- Speed buttons -->
+        <div class="controls-row speed-row">
+          <span class="row-label">Speed</span>
+          <button class="speed-btn" data-speed="0.25">0.25x</button>
+          <button class="speed-btn" data-speed="0.5">0.5x</button>
+          <button class="speed-btn" data-speed="0.6">0.6x</button>
+          <button class="speed-btn" data-speed="0.75">0.75x</button>
+          <button class="speed-btn" data-speed="0.8">0.8x</button>
+          <button class="speed-btn active" data-speed="1">1.0x</button>
+        </div>
+
+        <!-- A-B Loop -->
+        <div class="controls-row ab-row">
+          <span class="row-label">A-B Loop</span>
+          <button id="btn-set-a" class="ctrl-btn small">Set A</button>
+          <span id="ab-display" class="ab-display">-- / --</span>
+          <button id="btn-set-b" class="ctrl-btn small">Set B</button>
+          <button id="btn-clear-ab" class="ctrl-btn small accent">Clear</button>
+        </div>
+
+        <!-- Mirror + Pick new -->
+        <div class="controls-row util-row">
+          <button id="btn-mirror" class="ctrl-btn">🪞 Mirror</button>
+          <label class="ctrl-btn" for="file-input-2">📂 New Video</label>
+          <input type="file" id="file-input-2" accept="video/*" hidden>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p class="hint">Keyboard: <kbd>Space</kbd> play/pause &middot; <kbd>M</kbd> mirror</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>

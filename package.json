@@ -1,0 +1,10 @@
+{
+  "name": "dance-player-web",
+  "version": "1.0.0",
+  "description": "Dance video player PWA for practicing dance moves",
+  "private": true,
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  }
+}
