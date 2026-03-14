@@ -135,13 +135,14 @@ btnMirror.addEventListener('click', toggleMirror);
 function toggleFullscreen() {
   const wrapper = document.querySelector('.video-wrapper');
   if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-    // Lock to landscape if supported
-    const req = wrapper.requestFullscreen
-      ? wrapper.requestFullscreen()
-      : wrapper.webkitRequestFullscreen
-        ? wrapper.webkitRequestFullscreen()
-        : Promise.resolve();
-    req.catch(() => {});
+    // iOS Safari: only video element supports fullscreen via webkitEnterFullscreen
+    if (video.webkitEnterFullscreen) {
+      video.webkitEnterFullscreen();
+    } else if (wrapper.requestFullscreen) {
+      wrapper.requestFullscreen().catch(() => {});
+    } else if (wrapper.webkitRequestFullscreen) {
+      wrapper.webkitRequestFullscreen();
+    }
   } else {
     if (document.exitFullscreen) {
       document.exitFullscreen();
