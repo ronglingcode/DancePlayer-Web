@@ -267,34 +267,49 @@ header h1 {
   box-shadow: 0 0 6px var(--accent-glow);
 }
 
-/* ── Speed Buttons ───────────────────────────────────── */
+/* ── Speed Slider ────────────────────────────────────── */
 .speed-row {
-  gap: 6px;
+  gap: 10px;
 }
 
-.speed-btn {
+.speed-bar {
+  -webkit-appearance: none;
+  appearance: none;
   flex: 1 1 0;
   min-width: 0;
-  min-height: 40px;
-  padding: 6px 4px;
-  border: none;
-  border-radius: 20px;
+  height: 6px;
+  border-radius: 3px;
   background: var(--bg-light);
-  color: var(--text);
-  font-size: 0.82rem;
+  outline: none;
   cursor: pointer;
-  transition: background 0.15s, box-shadow 0.15s;
-  text-align: center;
 }
 
-.speed-btn:hover, .speed-btn:focus-visible {
-  background: var(--surface);
+.speed-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  box-shadow: 0 0 6px var(--accent-glow);
 }
 
-.speed-btn.active {
-  background: linear-gradient(135deg, var(--accent), var(--purple));
-  box-shadow: 0 0 10px var(--accent-glow);
-  font-weight: 600;
+.speed-bar::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+#speed-display {
+  margin-left: 6px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 /* ── Util Row ────────────────────────────────────────── */
@@ -363,11 +378,6 @@ kbd {
 }
 
 @media (max-width: 360px) {
-  .speed-btn {
-    font-size: 0.74rem;
-    padding: 6px 2px;
-  }
-
   .ctrl-btn.small {
     padding: 6px 10px;
     font-size: 0.8rem;

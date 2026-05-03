@@ -13,7 +13,9 @@ const btnSetB     = document.getElementById('btn-set-b');
 const btnClearAB  = document.getElementById('btn-clear-ab');
 const abDisplay   = document.getElementById('ab-display');
 const btnFullscreen = document.getElementById('btn-fullscreen');
-const speedBtns   = document.querySelectorAll('.speed-btn');
+const speedBar    = document.getElementById('speed-bar');
+const speedDisplay = document.getElementById('speed-display');
+const btnSpeedReset = document.getElementById('btn-speed-reset');
 
 // ── State ───────────────────────────────────────────────
 let loopA = null;
@@ -36,9 +38,8 @@ function loadFile(file) {
   objectURL = URL.createObjectURL(file);
   video.src = objectURL;
   video.loop = true;
-  video.playbackRate = 1;
+  setSpeed(1);
   clearABLoop();
-  setActiveSpeed(1);
   video.classList.remove('mirrored');
   btnMirror.classList.remove('active');
   pickSection.classList.add('hidden');
@@ -109,19 +110,17 @@ seekBar.addEventListener('change', () => {
 video.addEventListener('click', togglePlay);
 
 // ── Speed control ───────────────────────────────────────
-function setActiveSpeed(speed) {
-  speedBtns.forEach(btn => {
-    btn.classList.toggle('active', parseFloat(btn.dataset.speed) === speed);
-  });
+function setSpeed(speed) {
+  video.playbackRate = speed;
+  speedBar.value = String(speed);
+  speedDisplay.textContent = speed.toFixed(2) + '×';
 }
 
-speedBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const speed = parseFloat(btn.dataset.speed);
-    video.playbackRate = speed;
-    setActiveSpeed(speed);
-  });
+speedBar.addEventListener('input', () => {
+  setSpeed(parseFloat(speedBar.value));
 });
+
+btnSpeedReset.addEventListener('click', () => setSpeed(1));
 
 // ── Mirror ──────────────────────────────────────────────
 function toggleMirror() {
