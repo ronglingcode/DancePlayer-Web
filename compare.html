@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Record yourself dancing alongside a reference video. The output is one combined side-by-side or stacked clip.">
+  <title>Compare — Dance Player</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <a class="back-link" href="index.html" aria-label="Back to player">←</a>
+      <h1>Compare</h1>
+    </header>
+
+    <!-- Phase 1: Setup -->
+    <section id="setup-section" class="phase">
+      <div class="pick-section compact">
+        <label class="pick-btn" for="ref-input">
+          <span class="pick-icon">🎬</span>
+          <span id="ref-pick-label">Pick Reference Video</span>
+        </label>
+        <input type="file" id="ref-input" accept="video/*" hidden>
+      </div>
+
+      <div class="setup-controls hidden" id="setup-controls">
+        <div class="controls-row">
+          <span class="row-label">Layout</span>
+          <button class="layout-btn active" data-layout="sbs">↔ Side&nbsp;by&nbsp;Side</button>
+          <button class="layout-btn" data-layout="stack">↕ Stacked</button>
+        </div>
+        <div class="controls-row">
+          <span class="row-label">Camera</span>
+          <button class="cam-btn active" data-facing="user">Front</button>
+          <button class="cam-btn" data-facing="environment">Back</button>
+          <button id="btn-mirror-cam" class="ctrl-btn small active">🪞 Mirror</button>
+        </div>
+        <div class="controls-row">
+          <span class="row-label">Reference Audio</span>
+          <button id="btn-mute-ref" class="ctrl-btn small">🔇 Mute</button>
+          <span class="hint inline">Mic always records the room</span>
+        </div>
+
+        <button id="btn-start" class="ctrl-btn primary big">● Start Recording</button>
+      </div>
+    </section>
+
+    <!-- Phase 2: Recording -->
+    <section id="record-section" class="phase hidden">
+      <div class="canvas-wrapper">
+        <canvas id="preview-canvas"></canvas>
+        <div id="rec-indicator" class="rec-indicator">● REC <span id="rec-time">0:00</span></div>
+      </div>
+      <button id="btn-stop" class="ctrl-btn primary big">■ Stop</button>
+    </section>
+
+    <!-- Phase 3: Review -->
+    <section id="review-section" class="phase hidden">
+      <div class="video-wrapper">
+        <video id="result-video" controls playsinline></video>
+      </div>
+      <div class="controls-row util-row">
+        <a id="btn-download" class="ctrl-btn" download="dance-compare.mp4">⬇ Download</a>
+        <button id="btn-retry" class="ctrl-btn">↻ Record Again</button>
+        <button id="btn-new-ref" class="ctrl-btn">📂 New Reference</button>
+      </div>
+    </section>
+
+    <footer>
+      <p class="hint" id="status-hint"></p>
+    </footer>
+  </div>
+
+  <script src="compare.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>

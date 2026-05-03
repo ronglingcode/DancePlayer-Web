@@ -1,9 +1,11 @@
-const CACHE_NAME = 'dance-player-v3';
+const CACHE_NAME = 'dance-player-v4';
 const ASSETS = [
   '/',
   '/index.html',
+  '/compare.html',
   '/styles.css',
   '/app.js',
+  '/compare.js',
   '/manifest.json',
   '/icon.svg',
   '/favicon.svg'
