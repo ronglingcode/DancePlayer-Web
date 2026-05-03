@@ -43,9 +43,10 @@
           <button id="btn-mirror-cam" class="ctrl-btn small active">🪞 Mirror</button>
         </div>
         <div class="controls-row">
-          <span class="row-label">Reference Audio</span>
-          <button id="btn-mute-ref" class="ctrl-btn small">🔇 Mute</button>
-          <span class="hint inline">Mic always records the room</span>
+          <span class="row-label">Audio</span>
+          <button class="audio-btn active" data-mode="ref">Reference</button>
+          <button class="audio-btn" data-mode="both">Ref + Mic</button>
+          <button class="audio-btn" data-mode="mic">Mic</button>
         </div>
 
         <button id="btn-start" class="ctrl-btn primary big">● Start Recording</button>

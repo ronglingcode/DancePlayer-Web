@@ -13,8 +13,8 @@
 
   const layoutBtns = document.querySelectorAll('.layout-btn');
   const camBtns = document.querySelectorAll('.cam-btn');
+  const audioBtns = document.querySelectorAll('.audio-btn');
   const btnMirror = $('btn-mirror-cam');
-  const btnMuteRef = $('btn-mute-ref');
 
   const btnStart = $('btn-start');
   const btnStop = $('btn-stop');
@@ -31,7 +31,6 @@
   const refVideo = document.createElement('video');
   refVideo.playsInline = true;
   refVideo.preload = 'auto';
-  refVideo.crossOrigin = 'anonymous';
 
   const camVideo = document.createElement('video');
   camVideo.playsInline = true;
@@ -44,7 +43,7 @@
     layout: 'sbs',
     facing: 'user',
     mirror: true,
-    muteRef: false,
+    audioMode: 'ref', // 'ref' | 'both' | 'mic'
     recorder: null,
     recording: false,
     rafId: 0,
@@ -54,6 +53,55 @@
     mimeType: '',
     wakeLock: null,
   };
+
+  // ── Web Audio graph (lazy init) ─────────────────
+  let audioCtx = null;
+  let audioDest = null;
+  let refMediaSource = null;
+  let refGainRec = null;
+  let refGainSpk = null;
+  let micMediaSource = null;
+  let micGainRec = null;
+
+  async function setupAudioGraph() {
+    if (!audioCtx) {
+      const Ctor = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new Ctor();
+    }
+    if (audioCtx.state === 'suspended') {
+      try { await audioCtx.resume(); } catch (_) {}
+    }
+    if (!audioDest) audioDest = audioCtx.createMediaStreamDestination();
+
+    if (!refMediaSource) {
+      refMediaSource = audioCtx.createMediaElementSource(refVideo);
+      refGainSpk = audioCtx.createGain();
+      refGainRec = audioCtx.createGain();
+      refMediaSource.connect(refGainSpk).connect(audioCtx.destination);
+      refMediaSource.connect(refGainRec).connect(audioDest);
+    }
+
+    if (micMediaSource) {
+      try { micMediaSource.disconnect(); } catch (_) {}
+      micMediaSource = null;
+    }
+    const micTracks = state.camStream ? state.camStream.getAudioTracks() : [];
+    if (micTracks.length > 0) {
+      const micStream = new MediaStream(micTracks);
+      micMediaSource = audioCtx.createMediaStreamSource(micStream);
+      if (!micGainRec) micGainRec = audioCtx.createGain();
+      micMediaSource.connect(micGainRec).connect(audioDest);
+    }
+
+    applyAudioMode();
+  }
+
+  function applyAudioMode() {
+    const mode = state.audioMode;
+    if (refGainSpk) refGainSpk.gain.value = mode === 'mic' ? 0 : 1;
+    if (refGainRec) refGainRec.gain.value = mode === 'mic' ? 0 : 1;
+    if (micGainRec) micGainRec.gain.value = mode === 'ref' ? 0 : 1;
+  }
 
   function showPhase(name) {
     setupSection.classList.toggle('hidden', name !== 'setup');
@@ -110,11 +158,13 @@
     btnMirror.classList.toggle('active', state.mirror);
   });
 
-  btnMuteRef.addEventListener('click', () => {
-    state.muteRef = !state.muteRef;
-    btnMuteRef.classList.toggle('active', state.muteRef);
-    refVideo.muted = state.muteRef;
-  });
+  audioBtns.forEach((b) => b.addEventListener('click', () => {
+    if (b.classList.contains('active')) return;
+    audioBtns.forEach((x) => x.classList.remove('active'));
+    b.classList.add('active');
+    state.audioMode = b.dataset.mode;
+    applyAudioMode();
+  }));
 
   async function openCamera() {
     const constraints = {
@@ -252,11 +302,19 @@
       }
     } catch (_) {}
 
+    try {
+      await setupAudioGraph();
+    } catch (e) {
+      setStatus('Audio setup failed: ' + e.message);
+      btnStart.disabled = false;
+      showPhase('setup');
+      return;
+    }
+
     const canvasStream = canvas.captureStream(30);
-    const audioTracks = state.camStream.getAudioTracks();
     const combined = new MediaStream([
       ...canvasStream.getVideoTracks(),
-      ...audioTracks,
+      ...audioDest.stream.getAudioTracks(),
     ]);
 
     state.mimeType = pickMime();
@@ -275,7 +333,6 @@
     recorder.onstop = onRecorderStop;
 
     refVideo.currentTime = 0;
-    refVideo.muted = state.muteRef;
     drawFrame();
     try { await refVideo.play(); } catch (_) {}
     recorder.start();

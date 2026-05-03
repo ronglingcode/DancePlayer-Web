@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dance-player-v4';
+const CACHE_NAME = 'dance-player-v5';
 const ASSETS = [
   '/',
   '/index.html',

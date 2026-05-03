@@ -413,7 +413,8 @@ kbd {
 }
 
 .layout-btn,
-.cam-btn {
+.cam-btn,
+.audio-btn {
   flex: 1 1 0;
   min-width: 0;
   min-height: 44px;
@@ -428,12 +429,14 @@ kbd {
 }
 
 .layout-btn:hover, .layout-btn:focus-visible,
-.cam-btn:hover, .cam-btn:focus-visible {
+.cam-btn:hover, .cam-btn:focus-visible,
+.audio-btn:hover, .audio-btn:focus-visible {
   background: var(--surface);
 }
 
 .layout-btn.active,
-.cam-btn.active {
+.cam-btn.active,
+.audio-btn.active {
   background: linear-gradient(135deg, var(--accent), var(--purple));
   box-shadow: 0 0 10px var(--accent-glow);
   font-weight: 600;
@@ -456,10 +459,6 @@ kbd {
 #btn-mirror-cam.active {
   background: var(--accent);
   box-shadow: 0 0 12px var(--accent-glow);
-}
-
-.hint.inline {
-  margin-left: 4px;
 }
 
 .canvas-wrapper {
