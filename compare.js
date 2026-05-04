@@ -16,6 +16,7 @@
   const audioBtns = document.querySelectorAll('.audio-btn');
   const btnMirror = $('btn-mirror-cam');
 
+  const camPreview = $('cam-preview');
   const btnStart = $('btn-start');
   const btnStop = $('btn-stop');
   const btnDownload = $('btn-download');
@@ -133,6 +134,7 @@
     refPickLabel.textContent = file.name;
     setupControls.classList.remove('hidden');
     setStatus('');
+    openCamera().catch((e) => setStatus('Camera: ' + e.message));
   });
 
   layoutBtns.forEach((b) => b.addEventListener('click', () => {
@@ -156,6 +158,7 @@
   btnMirror.addEventListener('click', () => {
     state.mirror = !state.mirror;
     btnMirror.classList.toggle('active', state.mirror);
+    updatePreviewMirror();
   });
 
   audioBtns.forEach((b) => b.addEventListener('click', () => {
@@ -173,10 +176,17 @@
     };
     state.camStream = await navigator.mediaDevices.getUserMedia(constraints);
     camVideo.srcObject = state.camStream;
+    camPreview.srcObject = state.camStream;
     await camVideo.play().catch(() => {});
+    await camPreview.play().catch(() => {});
     if (camVideo.readyState < 1) {
       await new Promise((res) => camVideo.addEventListener('loadedmetadata', res, { once: true }));
     }
+    updatePreviewMirror();
+  }
+
+  function updatePreviewMirror() {
+    camPreview.classList.toggle('mirrored', state.mirror);
   }
 
   function stopCamStream() {
@@ -184,6 +194,7 @@
       state.camStream.getTracks().forEach((t) => t.stop());
       state.camStream = null;
       camVideo.srcObject = null;
+      camPreview.srcObject = null;
     }
   }
 
